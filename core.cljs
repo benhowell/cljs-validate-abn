@@ -1,3 +1,14 @@
+
+;; Clojure
+;;(defn parse-int [s]
+;;  (Integer/parseInt s))
+
+
+;; Clojurescript
+(defn parse-int [s]
+  (js/parseInt s))
+
+
 ;;if valid, returns correctly formatted ABN, else nil
 ;;NOTE: only validates that the ABN conforms to spec!
 (defn- validate-abn [abn]
@@ -8,10 +19,10 @@
       (do
         (run!
          (fn [i]
-           (let [di (js/parseInt (nth r-abn i))]
+           (let [di (parse-int (nth r-abn i))]
              (reset! result (+ @result (* (nth weight i) (if (= i 0) (dec di) di))))))
          (range (count r-abn)))
-        (if (= (mod @result 89) 0) (js/parseInt r-abn)
+        (if (= (mod @result 89) 0) (parse-int r-abn)
             ;;else invalid
             nil))
       ;; else invalid
